@@ -2,7 +2,6 @@
     width: 450px;
     height: auto;
     display: grid;
-    grid-gap: 5px;
 }
 
 .container .header {
@@ -25,4 +24,25 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+
+.minesweeper-info {
+    background-color: #454444;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+}
+
+.timer,
+.flags {
+    margin-right: 20px;
+}
+
+#timer,
+#flags {
+    font-weight: bold;
 }

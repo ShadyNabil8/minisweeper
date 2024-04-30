@@ -1,4 +1,5 @@
 let maxBombNumber = 4;
+export let bobmbsInGame = 0;
 
 export function getBombNumber(r, c, map) {
     let bombSurroundGroup = getGroubInx(r, c, map);
@@ -15,7 +16,7 @@ export function insertNumber(map) {
     let columns = map[0].length;
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
-            if (map[r][c] === "block") {
+            if (map[r][c] === "obstacle") {
                 let surroundBombs = getBombNumber(r, c, map);
                 if (surroundBombs != 0) map[r][c] = surroundBombs;
             }
@@ -31,6 +32,7 @@ export function insertBombs(map) {
             let willInsert = getOneWithProb(0.2);
             if ((willInsert === 1) && (checkValidBomb(map, r, c))) {
                 map[r][c] = "bomb";
+                bobmbsInGame++;
             }
         }
     }
@@ -40,7 +42,7 @@ function checkValidBomb(map, curRow, curCol) {
     let bombSurroundGroup = getGroubInx(curRow, curCol, map);
     for (let i = 0; i < bombSurroundGroup.length; i++) {
         let [bombR, bombC] = bombSurroundGroup[i];
-        if (map[bombR][bombC] === "block") {
+        if (map[bombR][bombC] === "obstacle") {
             let surroundBombs = 1;
             let blockSurroundGroup = getGroubInx(bombR, bombC, map);
             for (let j = 0; j < blockSurroundGroup.length; j++) {
@@ -89,8 +91,8 @@ export function drawFullGame(map) {
     for (let r = 0; r < map.length; r++) {
         for (let c = 0; c < map[0].length; c++) {
             let cell = document.querySelector(`.row-${r}-col-${c}`);
-            if (map[r][c] === "block") {
-                cell.style.backgroundImage = "url('./cupe.png')";
+            if (map[r][c] === "obstacle") {
+                cell.style.backgroundImage = "url('./obstacle.png')";
             }
             else if (map[r][c] === "bomb") {
                 cell.style.backgroundImage = "url('./bomb.png')";

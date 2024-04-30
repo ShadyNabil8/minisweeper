@@ -2,16 +2,17 @@ import {
     insertNumber,
     drawFullGame,
     insertBombs,
+    bobmbsInGame,
 } from "./helper.js";
+
+import {
+    startTimer,
+} from "./timer.js";
 
 let rows = 17;
 let columns = 9;
 
 let container = document.querySelector(".container");
-let header = (document.createElement("div"));
-header.classList.add("header");
-header.innerHTML = "Minisweeper";
-container.append(header);
 
 for (let i = 0; i < rows; i++) {
     let rowDiv = document.createElement("div");
@@ -27,10 +28,15 @@ for (let i = 0; i < rows; i++) {
 }
 
 //let map = Array.from({ length: rows }, () => Array(columns).fill("b"));
-let map = Array(rows).fill().map(() => Array(columns).fill("block"));
+let map = Array(rows).fill().map(() => Array(columns).fill("obstacle"));
 
 insertBombs(map);
 insertNumber(map);
 drawFullGame(map);
+
+flags = document.getElementById("flags");
+flags.innerHTML = bobmbsInGame;
+
+startTimer();
 
 console.log(map);
