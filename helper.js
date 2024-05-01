@@ -105,10 +105,10 @@ export function drawFullGame() {
             }
         });
     });
-    // if (win)
-    //     alert("Congratulation. You win");
-    // else
-    //     alert("Game over. You lose")
+    if (win)
+        alert("Congratulation. You win");
+    else
+        alert("Game over. You lose")
 }
 
 export function gameInit() {

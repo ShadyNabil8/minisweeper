@@ -13,7 +13,8 @@ export function onLeftClick(event) {
     const string = event.target.classList[1];
     const parts = string.split('-'); // Split string by '-' delimiter
     const [x, y] = parts.filter(part => !isNaN(part)).map(Number); // Filter out non-numeric parts and convert them to numbers
-    discover(x, y);
+    if (flagMap[x][y] != "flag")
+        discover(x, y);
 
 }
 

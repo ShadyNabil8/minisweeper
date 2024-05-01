@@ -43,7 +43,6 @@ insertBombs();
 insertNumber();
 gameInit();
 updateFlags();
-drawFullGame();
 startTimer();
 console.log(map);
 
