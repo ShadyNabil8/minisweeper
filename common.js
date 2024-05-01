@@ -1,10 +1,16 @@
 export let rows = 17;
 export let columns = 9;
-export let maxBombNumber = 4;
+export let maxNeighbourBomb = 4;
+export let maxNumberBomb = 5;
+export let probabilityOfInsertion = 0.2;
+
 
 
 //let map = Array.from({ length: rows }, () => Array(columns).fill("b"));
 export let map = Array(rows).fill().map(() => Array(columns).fill("obstacle"));
+
+export let flagMap = Array(rows).fill().map(() => Array(columns).fill("empty"));
+
 
 export function getGroubInx(curRow, curCol, map, includeCorners = true) {
     let groub = [];

@@ -2,7 +2,7 @@ import {
     insertNumber,
     drawFullGame,
     insertBombs,
-    bobmbsInGame,
+    updateFlags,
     gameInit,
 } from "./helper.js";
 
@@ -11,7 +11,8 @@ import {
 } from "./timer.js";
 
 import {
-    onCellClick,
+    onLeftClick,
+    onRightClick,
 } from "./events.js";
 
 import {
@@ -30,7 +31,8 @@ for (let i = 0; i < rows; i++) {
         let cell = document.createElement("div");
         cell.classList.add("cell");
         cell.classList.add(`row-${i}-col-${j}`);
-        cell.addEventListener('click', onCellClick);
+        cell.addEventListener('click', onLeftClick);
+        cell.addEventListener("contextmenu", onRightClick);
         rowDiv.append(cell);
     }
 }
@@ -39,12 +41,8 @@ for (let i = 0; i < rows; i++) {
 
 insertBombs(map);
 insertNumber(map);
-//drawFullGame(map);
 gameInit(map);
-
-flags = document.getElementById("flags");
-flags.innerHTML = bobmbsInGame;
-
+updateFlags();
 startTimer();
-
 console.log(map);
+

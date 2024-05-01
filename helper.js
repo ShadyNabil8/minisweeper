@@ -1,11 +1,15 @@
 import {
-    maxBombNumber,
+    maxNeighbourBomb,
     getGroubInx,
+    maxNumberBomb,
+    probabilityOfInsertion,
+    map,
+    flagMap,
 } from "./common.js";
 
 const numbers = ["one", "two", "three", "four"];
 
-export let bobmbsInGame = 0;
+export let expectedFlags = 0;
 
 export function getBombNumber(r, c, map) {
     let bombSurroundGroup = getGroubInx(r, c, map);
@@ -35,14 +39,21 @@ export function insertBombs(map) {
     let columns = map[0].length;
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
-            let willInsert = getOneWithProb(0.2);
-            if ((willInsert === 1) && (checkValidBomb(map, r, c))) {
+            let willInsert = getOneWithProb(probabilityOfInsertion);
+            if ((willInsert === 1) && (checkValidBomb(map, r, c)) && (expectedFlags < maxNumberBomb)) {
                 map[r][c] = "bomb";
-                bobmbsInGame++;
+                expectedFlags++;
             }
         }
     }
 }
+
+export function updateFlags(value = 0) {
+    expectedFlags += value;
+    flags = document.getElementById("flags");
+    flags.innerHTML = expectedFlags;
+}
+
 
 function checkValidBomb(map, curRow, curCol) {
     let bombSurroundGroup = getGroubInx(curRow, curCol, map);
@@ -55,7 +66,7 @@ function checkValidBomb(map, curRow, curCol) {
                 let [blockR, blockC] = blockSurroundGroup[j];
                 if (map[blockR][blockC] === "bomb") surroundBombs++;
             }
-            if (surroundBombs > maxBombNumber) {
+            if (surroundBombs > maxNeighbourBomb) {
                 return false;
             }
         }
@@ -80,13 +91,20 @@ function isTrapped(bombRow, bombCol, map) {
     else return false;
 }
 
-export function drawFullGame(map) {
+export function drawFullGame() {
     for (let r = 0; r < map.length; r++) {
         for (let c = 0; c < map[0].length; c++) {
             let cell = document.querySelector(`.row-${r}-col-${c}`);
-            cell.style.backgroundImage = `url('./icons/${map[r][c]}.png')`;
+            if ((map[r][c] != "bomb") && (flagMap[r][c] === "flag")) {
+                cell.style.backgroundImage = `url('./icons/wrongflag.png')`;
+                alert("Game over. You lose");
+            }
+            else {
+                cell.style.backgroundImage = `url('./icons/${map[r][c]}.png')`;
+            }
         }
     }
+    alert("Congratulation. You win");
 }
 
 export function gameInit(map) {

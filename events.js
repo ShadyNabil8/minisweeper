@@ -1,14 +1,41 @@
 import {
     map,
     getGroubInx,
+    flagMap,
 } from "./common.js";
+import {
+    updateFlags,
+    expectedFlags,
+    drawFullGame,
+} from "./helper.js";
 
-export function onCellClick(event) {
+export function onLeftClick(event) {
     const string = event.target.classList[1];
     const parts = string.split('-'); // Split string by '-' delimiter
     const [x, y] = parts.filter(part => !isNaN(part)).map(Number); // Filter out non-numeric parts and convert them to numbers
     discover(x, y);
 
+}
+
+export function onRightClick(event) {
+    event.preventDefault();
+    const string = event.target.classList[1];
+    const parts = string.split('-'); // Split string by '-' delimiter
+    const [x, y] = parts.filter(part => !isNaN(part)).map(Number); // Filter out non-numeric parts and convert them to numbers
+    let cell = document.querySelector(`.row-${x}-col-${y}`);
+    if (flagMap[x][y] === "empty") {
+        cell.style.backgroundImage = `url('./icons/flag.png')`;
+        updateFlags(-1);
+        flagMap[x][y] = "flag";
+    }
+    else {
+        updateFlags(1);
+        cell.style.backgroundImage = `url('./icons/cube.png')`;
+        flagMap[x][y] = "empty";
+    }
+    if (expectedFlags == 0) {
+        drawFullGame();
+    }
 }
 
 function discover(x, y, memo = []) {
@@ -31,5 +58,13 @@ function discover(x, y, memo = []) {
             let [n_x, n_y] = cor;
             discover(n_x, n_y, memo);
         }));
+    }
+    else if (!(map[x][y] == "bomb")) {
+        cell.style.backgroundImage = `url('./icons/${map[x][y]}.png')`
+    }
+    else {
+        map[x][y] = "redbomb"
+        drawFullGame();
+        alert("Game over. You lose");
     }
 }

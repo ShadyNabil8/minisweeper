@@ -32,21 +32,21 @@
 .minesweeper-info {
     background-color: #adadad;
 
-    border: solid rgb(72, 72, 72);
-    border-width: 1px;
-    padding: 10px;
+    border: solid rgb(168, 0, 0);
+    border-width: 2px;
+    padding: 0 40px 0 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
+
 }
 
 .timer,
 .flags {
     font-family: 'digital-7regular';
     color: red;
-    font-size: 50px;
-    padding: 4px;
+    font-size: 40px;
 }
 
 #timer,
