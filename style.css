@@ -1,16 +1,18 @@
+@font-face {
+    font-family: 'digital-7regular';
+    src: url('fonts/digital-7.regular-webfont.woff2') format('woff2'),
+        url('fonts/digital-7.regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 .container {
     width: 450px;
     height: auto;
     display: grid;
 }
 
-.container .header {
-    height: auto;
-    width: auto;
-    font-size: 20px;
-    text-align: center;
-    background: #524C42;
-}
 
 .container .row {
     height: auto;
@@ -28,8 +30,10 @@
 
 
 .minesweeper-info {
-    background-color: #454444;
-    color: white;
+    background-color: #adadad;
+
+    border: solid rgb(72, 72, 72);
+    border-width: 1px;
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -39,7 +43,10 @@
 
 .timer,
 .flags {
-    margin-right: 20px;
+    font-family: 'digital-7regular';
+    color: red;
+    font-size: 50px;
+    padding: 4px;
 }
 
 #timer,

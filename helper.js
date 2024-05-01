@@ -1,4 +1,10 @@
-let maxBombNumber = 4;
+import {
+    maxBombNumber,
+    getGroubInx,
+} from "./common.js";
+
+const numbers = ["one", "two", "three", "four"];
+
 export let bobmbsInGame = 0;
 
 export function getBombNumber(r, c, map) {
@@ -18,7 +24,7 @@ export function insertNumber(map) {
         for (let c = 0; c < columns; c++) {
             if (map[r][c] === "obstacle") {
                 let surroundBombs = getBombNumber(r, c, map);
-                if (surroundBombs != 0) map[r][c] = surroundBombs;
+                if (surroundBombs != 0) map[r][c] = numbers[surroundBombs - 1];
             }
         }
     }
@@ -61,20 +67,7 @@ function checkValidBomb(map, curRow, curCol) {
     return true;
 }
 
-function getGroubInx(curRow, curCol, map) {
-    let groub = [];
-    for (let r = curRow - 1; r <= curRow + 1; r++) {
-        if ((r >= 0) && (r < map.length)) {
-            for (let c = curCol - 1; c <= curCol + 1; c++) {
-                if ((c >= 0) && (c < map[0].length)) {
-                    if (!(r === curRow && c === curCol))
-                        groub.push([r, c]);
-                }
-            }
-        }
-    }
-    return groub;
-}
+
 
 function isTrapped(bombRow, bombCol, map) {
     let groub = getGroubInx(bombRow, bombCol, map);
@@ -91,24 +84,16 @@ export function drawFullGame(map) {
     for (let r = 0; r < map.length; r++) {
         for (let c = 0; c < map[0].length; c++) {
             let cell = document.querySelector(`.row-${r}-col-${c}`);
-            if (map[r][c] === "obstacle") {
-                cell.style.backgroundImage = "url('./obstacle.png')";
-            }
-            else if (map[r][c] === "bomb") {
-                cell.style.backgroundImage = "url('./bomb.png')";
-            }
-            else if (map[r][c] === 1) {
-                cell.style.backgroundImage = "url('./one.png')";
-            }
-            else if (map[r][c] === 2) {
-                cell.style.backgroundImage = "url('./two.png')";
-            }
-            else if (map[r][c] === 3) {
-                cell.style.backgroundImage = "url('./three.png')";
-            }
-            else if (map[r][c] === 4) {
-                cell.style.backgroundImage = "url('./four.png')";
-            }
+            cell.style.backgroundImage = `url('./icons/${map[r][c]}.png')`;
+        }
+    }
+}
+
+export function gameInit(map) {
+    for (let r = 0; r < map.length; r++) {
+        for (let c = 0; c < map[0].length; c++) {
+            let cell = document.querySelector(`.row-${r}-col-${c}`);
+            cell.style.backgroundImage = "url('./icons/cube.png')";
         }
     }
 }
