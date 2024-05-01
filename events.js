@@ -43,7 +43,7 @@ function discover(x, y, memo = []) {
     if (map[x][y] == "obstacle") {
         cell.style.backgroundImage = `url('./icons/obstacle.png')`;
         memo.push(cell);
-        const neighbours = getGroubInx(x, y, map, false);
+        const neighbours = getGroubInx(x, y, false);
         neighbours.filter((cor) => {
             let [n_x, n_y] = cor;
             let neighbourCell = document.querySelector(`.row-${n_x}-col-${n_y}`);
@@ -65,6 +65,5 @@ function discover(x, y, memo = []) {
     else {
         map[x][y] = "redbomb"
         drawFullGame();
-        alert("Game over. You lose");
     }
 }

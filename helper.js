@@ -7,45 +7,41 @@ import {
     flagMap,
 } from "./common.js";
 
-const numbers = ["one", "two", "three", "four"];
+const numbers = ["one", "two", "three", "four","five"];
 
 export let expectedFlags = 0;
 
-export function getBombNumber(r, c, map) {
-    let bombSurroundGroup = getGroubInx(r, c, map);
+export function getBombNumber(r, c) {
+    let bombSurroundGroup = getGroubInx(r, c);
     let bombs = 0;
-    for (let i = 0; i < bombSurroundGroup.length; i++) {
-        let [x, y] = bombSurroundGroup[i];
+    bombSurroundGroup.forEach((cell, r) => {
+        let [x, y] = cell;
         if (map[x][y] === "bomb") bombs++;
-    }
+    });
     return bombs;
 }
 
-export function insertNumber(map) {
-    let rows = map.length;
-    let columns = map[0].length;
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns; c++) {
-            if (map[r][c] === "obstacle") {
-                let surroundBombs = getBombNumber(r, c, map);
+export function insertNumber() {
+    map.forEach((cellRow, r) => {
+        cellRow.forEach((cell, c) => {
+            if (cell === "obstacle") {
+                let surroundBombs = getBombNumber(r, c);
                 if (surroundBombs != 0) map[r][c] = numbers[surroundBombs - 1];
             }
-        }
-    }
+        });
+    });
 }
 
-export function insertBombs(map) {
-    let rows = map.length;
-    let columns = map[0].length;
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns; c++) {
+export function insertBombs() {
+    map.forEach((cellRow, r) => {
+        cellRow.forEach((cell, c) => {
             let willInsert = getOneWithProb(probabilityOfInsertion);
-            if ((willInsert === 1) && (checkValidBomb(map, r, c)) && (expectedFlags < maxNumberBomb)) {
+            if ((willInsert === 1) && (checkValidBomb(r, c)) && (expectedFlags < maxNumberBomb)) {
                 map[r][c] = "bomb";
                 expectedFlags++;
             }
-        }
-    }
+        });
+    });
 }
 
 export function updateFlags(value = 0) {
@@ -55,13 +51,13 @@ export function updateFlags(value = 0) {
 }
 
 
-function checkValidBomb(map, curRow, curCol) {
-    let bombSurroundGroup = getGroubInx(curRow, curCol, map);
+function checkValidBomb(curRow, curCol) {
+    let bombSurroundGroup = getGroubInx(curRow, curCol);
     for (let i = 0; i < bombSurroundGroup.length; i++) {
         let [bombR, bombC] = bombSurroundGroup[i];
         if (map[bombR][bombC] === "obstacle") {
             let surroundBombs = 1;
-            let blockSurroundGroup = getGroubInx(bombR, bombC, map);
+            let blockSurroundGroup = getGroubInx(bombR, bombC);
             for (let j = 0; j < blockSurroundGroup.length; j++) {
                 let [blockR, blockC] = blockSurroundGroup[j];
                 if (map[blockR][blockC] === "bomb") surroundBombs++;
@@ -71,7 +67,7 @@ function checkValidBomb(map, curRow, curCol) {
             }
         }
         else if (map[bombR][bombC] === "bomb") {
-            if (isTrapped(bombR, bombC, map))
+            if (isTrapped(bombR, bombC))
                 return false;
         }
     }
@@ -80,8 +76,8 @@ function checkValidBomb(map, curRow, curCol) {
 
 
 
-function isTrapped(bombRow, bombCol, map) {
-    let groub = getGroubInx(bombRow, bombCol, map);
+function isTrapped(bombRow, bombCol) {
+    let groub = getGroubInx(bombRow, bombCol);
     let surroundBombs = 1;
     for (let i = 0; i < groub.length; i++) {
         let [x, y] = groub[i];
@@ -92,22 +88,30 @@ function isTrapped(bombRow, bombCol, map) {
 }
 
 export function drawFullGame() {
-    for (let r = 0; r < map.length; r++) {
-        for (let c = 0; c < map[0].length; c++) {
-            let cell = document.querySelector(`.row-${r}-col-${c}`);
-            if ((map[r][c] != "bomb") && (flagMap[r][c] === "flag")) {
-                cell.style.backgroundImage = `url('./icons/wrongflag.png')`;
-                alert("Game over. You lose");
+    let win = true;
+    map.forEach((cellRow, r) => {
+        cellRow.forEach((cell, c) => {
+            let cellDiv = document.querySelector(`.row-${r}-col-${c}`);
+            if ((cell != "bomb") && (flagMap[r][c] === "flag")) {
+                win = false;
+                cellDiv.style.backgroundImage = `url('./icons/wrongflag.png')`;
+            }
+            else if (cell === "redbomb") {
+                win = false;
+                cellDiv.style.backgroundImage = `url('./icons/${cell}.png')`;
             }
             else {
-                cell.style.backgroundImage = `url('./icons/${map[r][c]}.png')`;
+                cellDiv.style.backgroundImage = `url('./icons/${cell}.png')`;
             }
-        }
-    }
-    alert("Congratulation. You win");
+        });
+    });
+    // if (win)
+    //     alert("Congratulation. You win");
+    // else
+    //     alert("Game over. You lose")
 }
 
-export function gameInit(map) {
+export function gameInit() {
     for (let r = 0; r < map.length; r++) {
         for (let c = 0; c < map[0].length; c++) {
             let cell = document.querySelector(`.row-${r}-col-${c}`);

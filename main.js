@@ -1,9 +1,9 @@
 import {
     insertNumber,
-    drawFullGame,
     insertBombs,
     updateFlags,
     gameInit,
+    drawFullGame,
 } from "./helper.js";
 
 import {
@@ -39,10 +39,11 @@ for (let i = 0; i < rows; i++) {
 
 
 
-insertBombs(map);
-insertNumber(map);
-gameInit(map);
+insertBombs();
+insertNumber();
+gameInit();
 updateFlags();
+drawFullGame();
 startTimer();
 console.log(map);
 
